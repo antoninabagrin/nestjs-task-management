@@ -5,7 +5,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Task } from './task.entity';
+import { Task } from '../tasks/task.entity';
 
 @Entity()
 export class TaskMetadata {
@@ -18,7 +18,7 @@ export class TaskMetadata {
   @Column({ default: true })
   isDeactivated: boolean;
 
-  @OneToOne((type) => Task, (task) => task.id)
+  @OneToOne(() => Task, (task) => task.metadata)
   @JoinColumn()
   task: Task;
 }
