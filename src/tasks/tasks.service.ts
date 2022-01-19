@@ -6,12 +6,15 @@ import { TasksRepository } from './tasks.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { User } from 'src/auth/user.entity';
+import { TasksMetadataRepository } from 'src/task-metadata/tasks-metadata.repository';
+import { CreateTaskMetadataDto } from 'src/task-metadata/dto/create-task-metadata.dto';
 
 @Injectable()
 export class TasksService {
   constructor(
     @InjectRepository(TasksRepository)
     private tasksRepository: TasksRepository,
+    private tasksMetadataRepository: TasksMetadataRepository,
   ) {}
 
   getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
@@ -28,8 +31,14 @@ export class TasksService {
     return found;
   }
 
-  createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
-    return this.tasksRepository.createTask(createTaskDto, user);
+  async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
+    const task = await this.tasksRepository.createTask(createTaskDto, user);
+    await this.tasksMetadataRepository.createTaskMetadata(
+      CreateTaskMetadataDto,
+      task,
+    );
+
+    return task;
   }
 
   async deleteTask(id: string, user: User): Promise<void> {
