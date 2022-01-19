@@ -26,7 +26,7 @@ export class AuthService {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload: JwtPayload = { username };
-      const accesToken = await this.jwtService.sign(payload);
+      const accesToken: string = await this.jwtService.sign(payload);
       return { accesToken };
     } else {
       throw new UnauthorizedException('Please check your logic credentials');

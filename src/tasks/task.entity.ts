@@ -7,7 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TaskStatus } from './task-status.enum';
-import { TaskMetadata } from './taskmetadata.entity';
+import { TaskMetadata } from '../task-metadata/task-metadata.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Task {
@@ -27,5 +28,6 @@ export class Task {
   metadata: TaskMetadata;
 
   @ManyToOne((type) => User, (user) => user.tasks, { eager: false })
+  @Exclude({ toPlainOnly: true })
   user: User;
 }
