@@ -1,6 +1,6 @@
 import { Task } from 'src/tasks/task.entity';
 import { EntityRepository, Repository } from 'typeorm';
-import { CreateTaskMetadataDto } from './dto/create-task-metadata';
+import { CreateTaskMetadataDto } from './dto/create-task-metadata.dto';
 import { TaskMetadata } from './task-metadata.entity';
 
 @EntityRepository(TaskMetadata)
