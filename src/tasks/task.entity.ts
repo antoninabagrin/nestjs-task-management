@@ -25,7 +25,7 @@ export class Task {
   status: TaskStatus;
 
   @OneToOne((type) => TaskMetadata, (taskMetadata) => taskMetadata.task)
-  metadata: TaskMetadata;
+  taskMetadata: TaskMetadata;
 
   @ManyToOne((type) => User, (user) => user.tasks, { eager: false })
   @Exclude({ toPlainOnly: true })

@@ -1,4 +1,10 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { TaskStatus } from '../task-status.enum';
 
 export class GetTasksFilterDto {
@@ -10,6 +16,9 @@ export class GetTasksFilterDto {
   @IsString()
   search?: string;
 
-  // @IsNotEmpty()
-  // details: string;
+  @IsNotEmpty()
+  details: string;
+
+  @IsBoolean()
+  isDeactivated: false;
 }

@@ -18,7 +18,7 @@ export class TaskMetadata {
   @Column({ default: true })
   isDeactivated: boolean;
 
-  @OneToOne(() => Task, (task) => task.metadata)
+  @OneToOne(() => Task, (task) => task.taskMetadata)
   @JoinColumn()
   task: Task;
 }

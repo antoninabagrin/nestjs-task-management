@@ -5,6 +5,7 @@ import { Logger } from '@nestjs/common';
 import { TransformInterceptor } from './transform.interceptor';
 
 async function bootstrap() {
+  console.log(process.env.STAGE);
   const logger = new Logger();
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
