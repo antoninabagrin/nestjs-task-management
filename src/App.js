@@ -1,24 +1,44 @@
-import logo from './logo.svg';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import { SignUp } from './pages/SignUp';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './Theme';
+import SignIn from './pages/SignIn';
+import { Home } from '@mui/icons-material';
+import { Header } from './components/Header';
+import useToken from './components/useToken';
+// import { useState } from 'react';
+// import { AuthProvider } from './components/AuthProvider';
 
 function App() {
+  const { setToken } = useToken();
+
+  // const handleLogin = async () => {
+  //   setToken(token);
+  // };
+
+  // const handleLogout = () => {
+  //   setToken(null);
+  // };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      {/* <AuthProvider> */}
+      <Header>
+        <Routes>
+          <Route path="/" setToken={setToken} element={<Home />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/signin"
+            setToken={setToken}
+            index
+            element={<SignIn />}
+          />
+          {/* <Route path="*" element={<NoMatch />} /> */}
+        </Routes>
+      </Header>
+      {/* </AuthProvider> */}
+    </ThemeProvider>
   );
 }
 
