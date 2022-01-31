@@ -23,7 +23,7 @@ import useToken from './useToken';
 // ];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-export function Header(onLogout) {
+export function Header({ setIsAuthentificated }, onLogout) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { token, setToken } = useToken();
@@ -99,7 +99,7 @@ export function Header(onLogout) {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Link href="/Home" underline="none">
+                <Link href="/home" underline="none">
                   {' '}
                   <Typography textAlign="center">Home</Typography>
                 </Link>

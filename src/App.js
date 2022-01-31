@@ -4,40 +4,47 @@ import { SignUp } from './pages/SignUp';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './Theme';
 import SignIn from './pages/SignIn';
-import { Home } from '@mui/icons-material';
+import Home from './pages/Home';
 import { Header } from './components/Header';
-import useToken from './components/useToken';
-// import { useState } from 'react';
-// import { AuthProvider } from './components/AuthProvider';
+import { useEffect, useState } from 'react';
+import Dashboard from './pages/Dashboard';
 
 function App() {
-  const { setToken } = useToken();
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+  useEffect(() => {
+    let token = localStorage.getItem('jwt');
+    token && JSON.parse(token)
+      ? setIsAuthenticated(true)
+      : setIsAuthenticated(false);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('jwt', isAuthenticated);
+  }, [isAuthenticated]);
 
   // const handleLogin = async () => {
-  //   setToken(token);
+  //   setIsAuthenticated(isAuthenticated);
   // };
 
   // const handleLogout = () => {
-  //   setToken(null);
+  //   setIsAuthenticated(null);
   // };
 
   return (
     <ThemeProvider theme={theme}>
-      {/* <AuthProvider> */}
-      <Header>
-        <Routes>
-          <Route path="/" setToken={setToken} element={<Home />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route
-            path="/signin"
-            setToken={setToken}
-            index
-            element={<SignIn />}
-          />
-          {/* <Route path="*" element={<NoMatch />} /> */}
-        </Routes>
-      </Header>
-      {/* </AuthProvider> */}
+      <Header isAuthenticated={isAuthenticated} />
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route
+          path="/signin"
+          index
+          element={<SignIn setIsAuthenticated={setIsAuthenticated} />}
+        />
+        {/* <Route path="*" element={<NoMatch />} /> */}
+      </Routes>
     </ThemeProvider>
   );
 }
