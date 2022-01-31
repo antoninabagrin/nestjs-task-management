@@ -77,9 +77,7 @@ export function SignUp() {
   // };
 
   return (
-    <Layout>
-      <Container component="main">
-        <CssBaseline />
+    <>
         <Box
           sx={{
             marginTop: 8,
@@ -153,7 +151,6 @@ export function SignUp() {
             </Grid>
           </Box>
         </Box>
-      </Container>
-    </Layout>
+    </>
   );
 }

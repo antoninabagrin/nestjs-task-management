@@ -28,7 +28,7 @@ async function userLogin(credentials) {
   }).then((data) => data.json());
 }
 
-export default function SignIn({ setToken }) {
+export default function SignIn({ }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
@@ -48,15 +48,13 @@ export default function SignIn({ setToken }) {
       });
 
       if (token) {
-        setToken(token.accesToken);
+        // setToken(token.accesToken);
         navigate('/home');
       }
     }
   };
   return (
-    <Layout>
-      <Container component="main">
-        <CssBaseline />
+    <>
         <Box
           sx={{
             marginTop: 8,
@@ -120,11 +118,10 @@ export default function SignIn({ setToken }) {
             </Grid>
           </Box>
         </Box>
-      </Container>
-    </Layout>
+    </>
   );
 }
 
 SignIn.propTypes = {
-  setToken: PropTypes.func.isRequired,
+  // setToken: PropTypes.func.isRequired,
 };
