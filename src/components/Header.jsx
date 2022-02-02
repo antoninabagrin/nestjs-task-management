@@ -14,20 +14,12 @@ import MenuItem from '@mui/material/MenuItem';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { Link } from '@mui/material';
-import useToken from './useToken';
 
-// const pages = [
-//   { id: '1', name: 'Home', path: '/home' },
-//   { id: '2', name: 'SignIn', path: '/signin' },
-//   { id: '3', name: 'SignUp', path: '/signup' },
-// ];
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-export function Header({ setIsAuthentificated }, onLogout) {
+export function Header({ isAuthenticated, handleLogout }) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { token, setToken } = useToken();
-  let navigate = useNavigate();
+  const token = localStorage.getItem('jwt');
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -43,17 +35,9 @@ export function Header({ setIsAuthentificated }, onLogout) {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = (href) => {
-    if (href === '/logout' && token) {
-      setToken('');
-      sessionStorage.clear();
-      navigate('/signin');
-    }
-    setAnchorElUser(null);
-  };
-
-  const handleLogout = () => {
-    setToken(null);
+  const handleCloseUserMenu = () => {
+    handleLogout('jwt');
+    navigate('/signin');
   };
 
   return (
@@ -129,35 +113,38 @@ export function Header({ setIsAuthentificated }, onLogout) {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {isAuthenticated ? 'AUTH' : 'not AUTH'}
             <Button onClick={handleCloseNavMenu}>
               <Link
-                href="/Home"
+                href="/home"
                 underline="none"
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 Home
               </Link>
             </Button>
-
-            <Button onClick={handleCloseNavMenu}>
-              <Link
-                href="/signin"
-                underline="none"
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                Sign In
-              </Link>
-            </Button>
-
-            <Button onClick={handleCloseNavMenu}>
-              <Link
-                href="/signup"
-                underline="none"
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                Sign Up
-              </Link>
-            </Button>
+            {!isAuthenticated && (
+              <Button onClick={handleCloseNavMenu}>
+                <Link
+                  href="/signin"
+                  underline="none"
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Sign In
+                </Link>
+              </Button>
+            )}
+            {!isAuthenticated && (
+              <Button onClick={handleCloseNavMenu}>
+                <Link
+                  href="/signup"
+                  underline="none"
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Sign Up
+                </Link>
+              </Button>
+            )}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -181,13 +168,13 @@ export function Header({ setIsAuthentificated }, onLogout) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Link href="/dashboard" underline="none">
+              <MenuItem>
+                <Link href="/protected" underline="none">
                   <Typography textAlign="center">Dashboard</Typography>
                 </Link>
               </MenuItem>
-              {token && (
-                <MenuItem onClick={handleCloseUserMenu} onLogout={handleLogout}>
+              {isAuthenticated && (
+                <MenuItem onClick={handleCloseUserMenu}>
                   <Link href="/logout" underline="none">
                     <Typography textAlign="center">Logout</Typography>
                   </Link>

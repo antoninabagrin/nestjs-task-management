@@ -11,8 +11,7 @@ import Typography from '@mui/material/Typography';
 import { Link } from '@mui/material';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-// import { useAuth } from '../components/useAuth';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 async function userLogin(credentials) {
   console.log(credentials);
@@ -25,11 +24,13 @@ async function userLogin(credentials) {
   }).then((data) => data.json());
 }
 
-export default function SignIn({ onLogin }) {
+export default function SignIn({ handleLogin }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
-  // const { onLogin } = useAuth();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || '/protected';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,9 +46,9 @@ export default function SignIn({ onLogin }) {
       });
 
       if (token) {
-        localStorage.setItem('jwt', JSON.stringify(token));
-        // setToken(token.accesToken);
-        navigate('/home');
+        // console.log(token);
+        handleLogin(token.accesToken);
+        navigate(from, { replace: true });
       }
     }
   };
@@ -94,7 +95,12 @@ export default function SignIn({ onLogin }) {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <Button type="submit" fullWidth variant="contained" onClick={onLogin}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick={handleLogin}
+          >
             Sign In
           </Button>
           <Grid container>
@@ -116,5 +122,5 @@ export default function SignIn({ onLogin }) {
 }
 
 SignIn.propTypes = {
-  setToken: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired,
 };

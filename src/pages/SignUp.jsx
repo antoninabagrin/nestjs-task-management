@@ -64,15 +64,6 @@ export function SignUp() {
     }
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const user = new FormData(event.target.value);
-  //   console.log({
-  //     email: user.get('email'),
-  //     password: user.get('password'),
-  // //   });
-  // };
-
   return (
     <>
       <Box
