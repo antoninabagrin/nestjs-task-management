@@ -31,8 +31,6 @@ function App() {
     localStorage.removeItem('jwt');
   };
 
-  console.log('status', isAuthenticated);
-
   return (
     <ThemeProvider theme={theme}>
       <Header isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
@@ -41,7 +39,7 @@ function App() {
         <Route
           path="/protected"
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <RequireAuth>
               <GetAllTasks />
             </RequireAuth>
           }
